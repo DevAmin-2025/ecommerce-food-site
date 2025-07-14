@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tehran',
 
     /*
     |--------------------------------------------------------------------------
@@ -122,5 +122,8 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'base_url' => env('ADMIN_PANEL_URL', 'http://localhost:8000'),
+    'about_image_path' => env('ABOUT_IMAGE_PATH', '/images/about-us/')
 
 ];
