@@ -22,7 +22,7 @@
             <header class="header_section">
                 <div class="container">
                     <nav class="navbar navbar-expand-lg custom_nav-container">
-                        <a class="navbar-brand" href="index.html">
+                        <a class="navbar-brand" href="{{ route('home') }}">
                             <span>
                                 webprog.io
                             </span>
@@ -50,15 +50,29 @@
                                 </li>
                             </ul>
                             <div class="user_option">
-                                <a class="cart_link position-relative" href="cart.html">
-                                    <i class="bi bi-cart-fill text-white fs-5"></i>
-                                    <span class="position-absolute top-0 translate-middle badge rounded-pill">
-                                        3
-                                    </span>
-                                </a>
-                                <a href="login.html" class="btn-auth">
-                                    ورود
-                                </a>
+                                @auth
+                                    <a class="cart_link position-relative" href="cart.html">
+                                        <i class="bi bi-cart-fill text-white fs-5"></i>
+                                        <span class="position-absolute top-0 translate-middle badge rounded-pill">
+                                            3
+                                        </span>
+                                    </a>
+                                    <a href="login.html" class="btn btn-outline-light btn-sm me-2">
+                                        پروفایل
+                                    </a>
+                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-light btn-sm">خروج</button>
+                                    </form>
+                                @endauth
+                                @guest
+                                    <a href="{{ route('login') }}" class="btn-auth">
+                                        ورود
+                                    </a>
+                                    <a href="{{ route('register') }}" class="btn-auth">
+                                        ثبت نام
+                                    </a>
+                                @endguest
                             </div>
                         </div>
                     </nav>
