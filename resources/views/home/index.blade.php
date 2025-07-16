@@ -148,7 +148,9 @@
                                         </div>
                                         <div class="detail-box">
                                             <h5>
-                                                {{ $burger->name }}
+                                                <a href="{{ route('product.show', $burger->slug) }}">
+                                                    {{ $burger->name }}
+                                                </a>
                                             </h5>
                                             <p>
                                                 {{ $burger->description }}
@@ -198,7 +200,9 @@
                                         </div>
                                         <div class="detail-box">
                                             <h5>
-                                                {{ $salad->name }}
+                                                <a href="{{ route('product.show', $salad->slug) }}">
+                                                    {{ $salad->name }}
+                                                </a>
                                             </h5>
                                             <p>
                                                 {{ $salad->description }}
@@ -239,7 +243,7 @@
             </div>
 
             <div class="btn-box">
-                <a href="">
+                <a href="{{ route('product.menu') }}">
                     مشاهده بیشتر
                 </a>
             </div>

@@ -17,3 +17,4 @@ Route::group(['prefix' => 'contact-us'], function () {
 });
 
 Route::get('products/show/{product:slug}', [ProductController::class, 'show'])->name('product.show');
+Route::get('products/menu', [ProductController::class, 'menu'])->name('product.menu');
