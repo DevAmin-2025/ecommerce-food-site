@@ -46,6 +46,28 @@
     </section>
 
     <section class="food_section layout_padding-bottom">
+        @php
+            $categories = App\Models\Category::where('status', 1)->get();
+            $pizza_cat_id = App\Models\Category::where('name', 'پیتزا')->first()->id;
+            $burger_cat_id = App\Models\Category::where('name', 'برگر')->first()->id;
+            $salad_cat_id = App\Models\Category::where('name', 'سالاد و پیش غذا')->first()->id;
+
+            $pizzas = App\Models\Product::where('status', 1)
+                ->where('category_id', $pizza_cat_id)
+                ->inRandomOrder()
+                ->limit(3)
+                ->get();
+            $burgers = App\Models\Product::where('status', 1)
+                ->where('category_id', $burger_cat_id)
+                ->inRandomOrder()
+                ->limit(3)
+                ->get();
+            $salads = App\Models\Product::where('status', 1)
+                ->where('category_id', $salad_cat_id)
+                ->inRandomOrder()
+                ->limit(3)
+                ->get();
+        @endphp
         <div class="container" x-data="{ tab: 1 }">
             <div class="heading_container heading_center">
                 <h2>
@@ -54,332 +76,166 @@
             </div>
 
             <ul class="filters_menu">
-                <li :class="tab === 1 ? 'active' : ''" @click="tab = 1">برگر</li>
-                <li :class="tab === 2 ? 'active' : ''" @click="tab = 2">پیتزا</li>
-                <li :class="tab === 3 ? 'active' : ''" @click="tab = 3">پیش غذا و سالاد</li>
+                @foreach ($categories as $category)
+                    <li :class="tab === {{ $loop->index + 1 }} ? 'active' : ''" @click="tab = {{ $loop->index + 1 }}">
+                        {{ $category->name }}</li>
+                @endforeach
             </ul>
 
             <div class="filters-content">
                 <div x-show="tab === 1">
                     <div class="row grid">
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/b1.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            برگر مخصوص
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                <del>95,000</del>
-                                                <span>
-                                                    <span class="text-danger">(16%)</span>
-                                                    80,000
-                                                    <span>تومان</span>
-                                                </span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
+                        @foreach ($pizzas as $pizza)
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="box">
+                                    <div>
+                                        <div class="img-box">
+                                            <img class="img-fluid"
+                                                src="{{ imageUrl($pizza->primary_image, config('app.product_image_path')) }}"
+                                                alt="Product Image">
+                                        </div>
+                                        <div class="detail-box">
+                                            <h5>
+                                                <a href="{{ route('product.show', $pizza->slug) }}">
+                                                    {{ $pizza->name }}
                                                 </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
+                                            </h5>
+                                            <p>
+                                                {{ $pizza->description }}
+                                            </p>
+                                            <div class="options">
+                                                @if ($pizza->is_sale)
+                                                    <h6>
+                                                        <del>{{ number_format($pizza->price) }}</del>
+                                                        <span>
+                                                            <span
+                                                                class="text-danger">({{ calDiscountPercentage($pizza->price, $pizza->sale_price) }}%)</span>
+                                                            {{ number_format($pizza->sale_price) }}
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </h6>
+                                                @else
+                                                    <h6>
+                                                        {{ $pizza->price }}
+                                                        <span>تومان</span>
+                                                    </h6>
+                                                @endif
+                                                <div class="d-flex">
+                                                    <a class="me-2" href="">
+                                                        <i class="bi bi-cart-fill text-white fs-6"></i>
+                                                    </a>
+                                                    <a href="">
+                                                        <i class="bi bi-heart-fill  text-white fs-6"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/b2.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            چیز برگر
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                110,000
-                                                <span>تومان</span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
-                                                </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/b3.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            رویال برگر
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                121,000
-                                                <span>تومان</span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
-                                                </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
                 <div x-show="tab === 2">
                     <div class="row grid">
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/p1.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            پیتزا مخصوص 1 نفره
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                200,000
-                                                <span>تومان</span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
-                                                </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
+                        @foreach ($burgers as $burger)
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="box">
+                                    <div>
+                                        <div class="img-box">
+                                            <img class="img-fluid" src="{{ imageUrl($burger->primary_image, config('app.product_image_path')) }}" alt="Product Image">
+                                        </div>
+                                        <div class="detail-box">
+                                            <h5>
+                                                {{ $burger->name }}
+                                            </h5>
+                                            <p>
+                                                {{ $burger->description }}
+                                            </p>
+                                            <div class="options">
+                                                @if ($burger->is_sale)
+                                                    <h6>
+                                                        <del>{{ number_format($burger->price) }}</del>
+                                                        <span>
+                                                            <span
+                                                                class="text-danger">({{ calDiscountPercentage($burger->price, $burger->sale_price) }}%)</span>
+                                                            {{ number_format($burger->sale_price) }}
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </h6>
+                                                @else
+                                                    <h6>
+                                                        {{ $burger->price }}
+                                                        <span>تومان</span>
+                                                    </h6>
+                                                @endif
+                                                <div class="d-flex">
+                                                    <a class="me-2" href="">
+                                                        <i class="bi bi-cart-fill text-white fs-6"></i>
+                                                    </a>
+                                                    <a href="">
+                                                        <i class="bi bi-heart-fill  text-white fs-6"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/p2.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            پیتزا مخصوص خانواده
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                <del>450,000</del>
-                                                <span>
-                                                    <span class="text-danger">(20%)</span>
-                                                    360,000
-                                                    <span>تومان</span>
-                                                </span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
-                                                </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/p3.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            پیتزا سرآشپز
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                300,000
-                                                <span>تومان</span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
-                                                </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
                 <div x-show="tab === 3">
                     <div class="row grid">
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/s1.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            سالاد فصل
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                34,000
-                                                <span>تومان</span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
-                                                </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
+                        @foreach ($salads as $salad)
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="box">
+                                    <div>
+                                        <div class="img-box">
+                                            <img class="img-fluid" src="{{ imageUrl($salad->primary_image, config('app.product_image_path')) }}" alt="Product Image">
+                                        </div>
+                                        <div class="detail-box">
+                                            <h5>
+                                                {{ $salad->name }}
+                                            </h5>
+                                            <p>
+                                                {{ $salad->description }}
+                                            </p>
+                                            <div class="options">
+                                                @if ($salad->is_sale)
+                                                    <h6>
+                                                        <del>{{ number_format($salad->price) }}</del>
+                                                        <span>
+                                                            <span
+                                                                class="text-danger">({{ calDiscountPercentage($salad->price, $salad->sale_price) }}%)</span>
+                                                            {{ number_format($salad->sale_price) }}
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </h6>
+                                                @else
+                                                    <h6>
+                                                        {{ $salad->price }}
+                                                        <span>تومان</span>
+                                                    </h6>
+                                                @endif
+                                                <div class="d-flex">
+                                                    <a class="me-2" href="">
+                                                        <i class="bi bi-cart-fill text-white fs-6"></i>
+                                                    </a>
+                                                    <a href="">
+                                                        <i class="bi bi-heart-fill  text-white fs-6"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/s2.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            سالاد کلم
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                44,000
-                                                <span>تومان</span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
-                                                </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img class="img-fluid" src="./images/s3.jpg" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            سالاد سزار
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                144,000
-                                                <span>تومان</span>
-                                            </h6>
-                                            <div class="d-flex">
-                                                <a class="me-2" href="">
-                                                    <i class="bi bi-cart-fill text-white fs-6"></i>
-                                                </a>
-                                                <a href="">
-                                                    <i class="bi bi-heart-fill  text-white fs-6"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
-
             </div>
 
             <div class="btn-box">
@@ -398,7 +254,8 @@
             <div class="row">
                 <div class="col-md-6 ">
                     <div class="img-box">
-                        <img src="{{ imageUrl($item->image_address) }}" alt="About-us Image" />
+                        <img src="{{ imageUrl($item->image_address, config('app.about_image_path')) }}"
+                            alt="About-us Image" />
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -430,7 +287,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form_container">
-                        <x-contact-us.form/>
+                        <x-contact-us.form />
                     </div>
                 </div>
                 <div class="col-md-6">

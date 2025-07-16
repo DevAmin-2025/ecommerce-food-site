@@ -1,6 +1,11 @@
 <?php
 
-function ImageUrl($img)
+function ImageUrl(string $img, string $path): string
 {
-    return config('app.base_url') . config('app.about_image_path') . $img;
+    return config('app.base_url') . $path . $img;
 };
+
+function calDiscountPercentage(int $price, int $sale_price): int
+{
+    return round((($price - $sale_price) / $price) * 100);
+}

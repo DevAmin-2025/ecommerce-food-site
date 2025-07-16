@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-6 ">
                 <div class="img-box">
-                    <img src="{{ imageUrl($item->image_address) }}" alt="About-us Image" />
+                    <img src="{{ imageUrl($item->image_address, config('app.about_image_path')) }}" alt="About-us Image" />
                 </div>
             </div>
             <div class="col-md-6">

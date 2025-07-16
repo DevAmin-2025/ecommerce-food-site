@@ -124,6 +124,6 @@ return [
     ],
 
     'base_url' => env('ADMIN_PANEL_URL', 'http://localhost:8000'),
-    'about_image_path' => env('ABOUT_IMAGE_PATH', '/images/about-us/')
-
+    'about_image_path' => env('ABOUT_IMAGE_PATH', '/images/about-us/'),
+    'product_image_path' => env('PRODUCT_IMAGE_PATH', '/images/products/')
 ];
