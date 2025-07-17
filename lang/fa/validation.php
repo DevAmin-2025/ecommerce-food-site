@@ -180,7 +180,8 @@ return [
         'date_on_sale_to' => 'تاریخ پایان حراجی',
         'expire_at' => 'تاریخ انقضا',
         'image_address' => 'عکس',
-        'subject' => 'موضوع'
+        'subject' => 'موضوع',
+        'current_password' => 'رمزعبور فعلی',
+        'postal_code' => 'کدپستی'
     ],
-
 ];

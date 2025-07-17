@@ -150,7 +150,7 @@
                                                     <a class="me-2" href="">
                                                         <i class="bi bi-cart-fill text-white fs-6"></i>
                                                     </a>
-                                                    <a href="">
+                                                    <a href="{{ route('profile.add.wishlist', ['product_id' => $product->id]) }}">
                                                         <i class="bi bi-heart-fill text-white fs-6"></i>
                                                     </a>
                                                 </div>

@@ -57,7 +57,7 @@
                                             3
                                         </span>
                                     </a>
-                                    <a href="login.html" class="btn btn-outline-light btn-sm me-2">
+                                    <a href="{{ route('profile.index') }}" class="btn btn-outline-light btn-sm me-2">
                                         پروفایل
                                     </a>
                                     <form action="{{ route('logout') }}" method="POST" class="d-inline">
