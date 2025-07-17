@@ -24,7 +24,7 @@
                                                 width="100" alt="Product Image" />
                                         </th>
                                         <td class="fw-bold">
-                                            <a href=""
+                                            <a href="{{ route('product.show', $item->product->slug) }}"
                                                 style="text-decoration: none; color: inherit;">
                                                 {{ $item->product->name }}
                                             </a>
