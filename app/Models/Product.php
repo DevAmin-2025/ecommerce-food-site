@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
+    protected $guarded = [];
+
     public function getIsSaleAttribute(): bool
     {
         return $this->sale_price > 0

@@ -182,6 +182,7 @@ return [
         'image_address' => 'عکس',
         'subject' => 'موضوع',
         'current_password' => 'رمزعبور فعلی',
-        'postal_code' => 'کدپستی'
+        'postal_code' => 'کدپستی',
+        'address_id' => 'آدرس'
     ],
 ];

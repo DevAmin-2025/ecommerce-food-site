@@ -51,10 +51,10 @@
                             </ul>
                             <div class="user_option">
                                 @auth
-                                    <a class="cart_link position-relative" href="cart.html">
+                                    <a class="cart_link position-relative" href="{{ route('cart.index') }}">
                                         <i class="bi bi-cart-fill text-white fs-5"></i>
                                         <span class="position-absolute top-0 translate-middle badge rounded-pill">
-                                            3
+                                            {{ count(session('cart', [])) }}
                                         </span>
                                     </a>
                                     <a href="{{ route('profile.index') }}" class="btn btn-outline-light btn-sm me-2">

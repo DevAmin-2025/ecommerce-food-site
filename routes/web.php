@@ -2,11 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\ForgetPasswordController;
-use App\Http\Controllers\ProfileController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -14,14 +16,14 @@ Route::get('about-us', function () {
     return view('about-us');
 })->name('about-us');
 
-Route::group(['prefix' => 'contact-us'], function () {
-    Route::get('/', [ContactUsController::class, 'index'])->name('contact-us.index');
-    Route::post('store', [ContactUsController::class, 'store'])->name('contact-us.store');
+Route::prefix('contact-us')->controller(ContactUsController::class)->group(function () {
+    Route::get('/', 'index')->name('contact-us.index');
+    Route::post('store', 'store')->name('contact-us.store');
 });
 
-Route::controller(ProductController::class)->group(function () {
-    Route::get('products/show/{product:slug}', 'show')->name('product.show');
-    Route::get('products/menu', 'menu')->name('product.menu');
+Route::prefix('products')->controller(ProductController::class)->group(function () {
+    Route::get('show/{product:slug}', 'show')->name('product.show');
+    Route::get('menu', 'menu')->name('product.menu');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -53,4 +55,21 @@ Route::prefix('profile')->controller(ProfileController::class)->group(function (
     Route::get('wishlist', 'wishlist')->name('profile.wishlist');
     Route::get('wishlist/add', 'addToWishlist')->name('profile.add.wishlist');
     Route::delete('wishlist/{wishlist}', 'removeFromWishlist')->name('profile.remove.wishlist');
+});
+
+Route::prefix('cart')->controller(CartController::class)->group(function () {
+    Route::get('/', 'index')->name('cart.index');
+    Route::get('increment', 'increment')->name('cart.increment');
+    Route::get('decrement', 'decrement')->name('cart.decrement');
+    Route::get('remove', 'remove')->name('cart.remove');
+    Route::delete('clear', 'clear')->name('cart.clear');
+    Route::get('add', 'add')->name('cart.add');
+    Route::get('check-coupon', 'checkCoupon')->name('cart.check.coupon');
+    Route::delete('destroy-coupon', 'destroyCoupon')->name('cart.destroy.coupon');
+});
+
+Route::prefix('payment')->controller(PaymentController::class)->group(function () {
+    Route::post('send', 'send')->name('payment.send');
+    Route::get('verify', 'verify')->name('payment.verify');
+    Route::get('status', 'status')->name('payment.status');
 });

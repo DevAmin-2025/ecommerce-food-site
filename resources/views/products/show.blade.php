@@ -28,7 +28,7 @@
 
                             <p>{{ $product->description }}</p>
 
-                            <form x-data="{ quantity: 1 }" action="" class="mt-5 d-flex">
+                            <form x-data="{ quantity: 1 }" action="{{ route('cart.add') }}" class="mt-5 d-flex">
                                 <button type="submit" class="btn-add">افزودن به سبد خرید</button>
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="qty" :value="quantity">
@@ -119,7 +119,7 @@
                                             </h6>
                                         @endif
                                         <div class="d-flex">
-                                            <a class="me-2" href="">
+                                            <a class="me-2" href="{{ route('cart.increment', ['product_id' => $randomProduct->id]) }}">
                                                 <i class="bi bi-cart-fill text-white fs-6"></i>
                                             </a>
                                             <a href="{{ route('profile.add.wishlist', ['product_id' => $randomProduct->id]) }}">

@@ -35,21 +35,21 @@
                         <div class="row g-4">
                             <div class="col col-md-6">
                                 <label class="form-label">عنوان</label>
-                                <input name="title" type="text" class="form-control" />
+                                <input name="title" value="{{ old('title') }}" type="text" class="form-control" />
                                 @error('title')
                                     <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col col-md-6">
                                 <label class="form-label">شماره تماس</label>
-                                <input name="cellphone" type="text" class="form-control" />
+                                <input name="cellphone" value="{{ old('cellphone') }}" type="text" class="form-control" />
                                 @error('cellphone')
                                     <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col col-md-6">
                                 <label class="form-label">کد پستی</label>
-                                <input name="postal_code" type="text" class="form-control" />
+                                <input name="postal_code" value="{{ old('postal_code') }}" type="text" class="form-control" />
                                 @error('postal_code')
                                     <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
@@ -72,7 +72,7 @@
                             </div>
                             <div class="col col-md-12">
                                 <label class="form-label">آدرس</label>
-                                <textarea name="address" type="text" rows="5" class="form-control"></textarea>
+                                <textarea name="address" type="text" rows="5" class="form-control">{{ old('address') }}</textarea>
                                 @error('address')
                                     <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
