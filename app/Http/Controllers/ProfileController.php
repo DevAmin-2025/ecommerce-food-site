@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Province;
+use App\Models\Transaction;
+use App\Models\Wishlist;
 use Illuminate\View\View;
 use App\Models\UserAddress;
-use App\Models\Wishlist;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 
 class ProfileController extends Controller
 {
@@ -188,5 +190,22 @@ class ProfileController extends Controller
     {
         $wishlist->delete();
         return redirect()->back()->with('warning', 'محصول مورد نظر از لیست علاقه مندی ها حذف شد.');
+    }
+
+    public function orders(): View
+    {
+        $orders = Order::where('user_id', Auth::id())
+            ->latest()
+            ->with('address', 'orderItems')
+            ->paginate(10);
+        return view('profile.orders', compact('orders'));
+    }
+
+    public function transactions(): View
+    {
+        $transactions = Transaction::where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+        return view('profile.transactions', compact('transactions'));
     }
 }

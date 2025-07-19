@@ -20,7 +20,7 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 @if ($status)
-                                    <a href="#" class="btn btn-primary">مشاهده سفارش</a>
+                                    <a href="{{ route('profile.order') }}" class="btn btn-primary">مشاهده سفارش</a>
                                 @else
                                     <a href="{{ route('cart.index') }}" class="btn btn-primary">سبد خرید</a>
                                 @endif
