@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\ProductImage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -49,7 +50,16 @@ class Product extends Model
                 $query->orderBy('price');
                 break;
             case 'bestseller':
-                // To be completed
+                $popularProducts = DB::table('orders as o')
+                    ->join('order_items as oi', 'o.id', '=', 'oi.order_id')
+                    ->where('o.payment_status', 1)
+                    ->groupBy('oi.product_id')
+                    ->orderByDesc(DB::raw('COUNT(oi.product_id)'))
+                    ->pluck('oi.product_id');
+                if ($popularProducts->isNotEmpty()) {
+                    $query->whereIn('id', $popularProducts)
+                        ->orderByRaw('FIELD(id, ' . $popularProducts->implode(',') . ')');
+                };
                 break;
             case 'sale':
                 $query->where('sale_price', '>', 0)
