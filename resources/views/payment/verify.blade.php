@@ -12,7 +12,7 @@
                                 @if ($status)
                                     <i class="bi bi-check-circle-fill text-success fs-1"></i>
                                     <h5 class="mt-3 text-success">پرداخت شما با موفقیت انجام شد شماره پیگیری:
-                                        {{ $refNumber }}</h5>
+                                        {{ $refNumber ? $refNumber : 'کدپیگیری برای شما صادر نشده است.' }}</h5>
                                 @else
                                     <i class="bi bi-x-circle-fill text-danger fs-1"></i>
                                     <h5 class="mt-3 text-danger">پرداخت با خطا مواجه شد</h5>

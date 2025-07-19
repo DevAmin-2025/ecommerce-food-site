@@ -28,7 +28,7 @@
                                         <td>
                                             <span class="{{ $transaction->getRawOriginal('status') == 0 ? 'text-danger' : 'text-success' }}">{{ $transaction->status }}</span>
                                         </td>
-                                        <td>{{ $transaction->ref_number }}</td>
+                                        <td>{{ $transaction->ref_number ? $transaction->ref_number : 'null' }}</td>
                                         <td>{{ jdate($transaction->created_at)->format('Y/m/d') }}</td>
                                     </tr>
                                 @endforeach
