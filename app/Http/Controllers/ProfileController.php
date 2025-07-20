@@ -158,6 +158,10 @@ class ProfileController extends Controller
 
     public function addressDestroy(UserAddress $address): RedirectResponse
     {
+        $hasOrder = Order::where('address_id', $address->id)->get();
+        if ($hasOrder->isNotEmpty()) {
+            return redirect()->route('profile.address')->with('error', 'نمیتوانید این آدرس را پاک کنید زیرا قبلا سفارش هایی را با این آدرس ثبت کرده اید.');;
+        }
         $address->delete();
         return redirect()->route('profile.address')->with('warning', 'آدرس با موفقیت حذف شد.');
     }

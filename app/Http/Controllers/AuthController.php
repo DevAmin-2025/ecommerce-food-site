@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
@@ -24,16 +25,25 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        try {
+            DB::beginTransaction();
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
 
-        if ($user) {
+            $role_id = DB::table('roles')->where('name', 'user')->first()->id;
+            DB::table('role_user')->insert([
+                'user_id' => $user->id,
+                'role_id' => $role_id
+            ]);
+            DB::commit();
             return redirect()->route('login')->with('success', 'ثبت نام با موفقیت انجام شد. لطفا وارد شوید.');
-        }
-        return redirect()->back()->with('error', 'ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.');
+        } catch (\Exception) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'ثبت نام با خطا مواجه شد. لطفا دوباره تلاش کنید.');
+        };
     }
 
     public function login(): View

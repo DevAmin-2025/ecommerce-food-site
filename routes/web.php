@@ -31,7 +31,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'registerPost')->name('register.post');
     Route::get('login', 'login')->name('login');
     Route::post('login', 'loginPost')->name('login.post');
-    Route::post('logout', 'logout')->name('logout');
+    Route::post('logout', 'logout')->name('logout')->middleware('auth');
 });
 
 Route::controller(ForgetPasswordController::class)->group(function () {
@@ -41,7 +41,7 @@ Route::controller(ForgetPasswordController::class)->group(function () {
     Route::post('reset-password', 'resetPasswordPost')->name('reset.password.post');
 });
 
-Route::prefix('profile')->controller(ProfileController::class)->name('profile.')->group(function () {
+Route::prefix('profile')->controller(ProfileController::class)->name('profile.')->middleware('auth')->group(function () {
     Route::get('edit-password', 'editPassword')->name('edit.password');
     Route::put('update-password', 'updatePassword')->name('update.password');
     Route::get('/', 'index')->name('index');
@@ -59,7 +59,7 @@ Route::prefix('profile')->controller(ProfileController::class)->name('profile.')
     Route::get('transactions', 'transactions')->name('transaction');
 });
 
-Route::prefix('cart')->controller(CartController::class)->name('cart.')->group(function () {
+Route::prefix('cart')->controller(CartController::class)->name('cart.')->middleware('auth')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('increment', 'increment')->name('increment');
     Route::get('decrement', 'decrement')->name('decrement');
@@ -70,7 +70,7 @@ Route::prefix('cart')->controller(CartController::class)->name('cart.')->group(f
     Route::delete('destroy-coupon', 'destroyCoupon')->name('destroy.coupon');
 });
 
-Route::prefix('payment')->controller(PaymentController::class)->name('payment.')->group(function () {
+Route::prefix('payment')->controller(PaymentController::class)->name('payment.')->middleware('auth')->group(function () {
     Route::post('send', 'send')->name('send');
     Route::get('verify', 'verify')->name('verify');
     Route::get('status', 'status')->name('status');
